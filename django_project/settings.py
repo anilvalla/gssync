@@ -62,17 +62,7 @@ STATICFILES_DIRS = [
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# REST Framework settings
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
-}
-
-# Root URL configuration
-ROOT_URLCONF = 'django_project.urls'
-
-# Template configuration
+# Templates configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -88,6 +78,16 @@ TEMPLATES = [
         },
     },
 ]
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
+
+# Root URL configuration
+ROOT_URLCONF = 'django_project.urls'
 
 # WSGI application
 WSGI_APPLICATION = 'django_project.wsgi.application'
