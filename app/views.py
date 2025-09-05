@@ -1,23 +1,26 @@
-from rest_framework import viewsets
+import traceback
+import logging
 from django.shortcuts import render
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import viewsets
 from .models import Project, Task
 from .serializers import ProjectSerializer, TaskSerializer
 
-# Existing ViewSets (keep these)
-class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+logger = logging.getLogger(__name__)
 
-class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-# New views for homepage and API root
 def home_page(request):
-    projects = Project.objects.all()
-    return render(request, 'home.html', {'projects': projects})
+    try:
+        projects = Project.objects.all()
+        return render(request, 'home.html', {'projects': projects})
+    except Exception as e:
+        # Log the full traceback
+        logger.error("Error in home_page view", exc_info=True)
+        
+        # Return a detailed error response
+        error_message = f"An error occurred: {str(e)}\n\n{traceback.format_exc()}"
+        return HttpResponse(error_message, status=500)
 
 class HomeAPIView(APIView):
     def get(self, request):
@@ -28,3 +31,11 @@ class HomeAPIView(APIView):
                 '/api/tasks/'
             ]
         })
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
