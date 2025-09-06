@@ -1,9 +1,14 @@
-from django.contrib.auth import authenticate
-from django.views.decorators.http import require_http_methods
+import os
+from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 import json
 import base64
+from .models import Slate
+
+def home_page(request):
+    return render(request, 'home.html')
 
 def basic_auth_required(view_func):
     def wrapper(request, *args, **kwargs):
@@ -16,30 +21,30 @@ def basic_auth_required(view_func):
             response = HttpResponse('Unauthorized', status=401)
             response['WWW-Authenticate'] = 'Basic realm="Grad Slate Sync"'
             return response
-
+        
         # Decode the Authorization header
         try:
             auth_header = request.META['HTTP_AUTHORIZATION']
             auth_parts = auth_header.split()
-
+            
             # Ensure it's a Basic auth header
             if len(auth_parts) != 2 or auth_parts[0].lower() != 'basic':
                 return HttpResponse('Unauthorized', status=401)
-
+            
             # Decode credentials
             decoded = base64.b64decode(auth_parts[1]).decode('utf-8')
             username, password = decoded.split(':', 1)
-
+            
             # Check against environment variables
             if (username != API_USERNAME or password != API_PASSWORD):
                 return HttpResponse('Invalid credentials', status=401)
-
+        
         except Exception as e:
             return HttpResponse('Unauthorized', status=401)
-
+        
         # Call the view
         return view_func(request, *args, **kwargs)
-
+    
     return wrapper
 
 @csrf_exempt
@@ -49,7 +54,7 @@ def update_slate(request):
     try:
         # Parse request body
         data = json.loads(request.body)
-
+        
         # Extract parameters
         slate_guid = data.get('SlateGuid')
         bu_id = data.get('BUID')
