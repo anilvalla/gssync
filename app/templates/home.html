@@ -1,50 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Project Management App</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        .projects {
-            list-style-type: none;
-            padding: 0;
-        }
-        .project {
-            background-color: #f4f4f4;
-            margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grad Slate Sync - gssync</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <h1>Project Management App</h1>
+    <header>
+        <h1>Boston University</h1>
+        <p>Welcome to Grad Slate Sync Portal</p>
+    </header>
     
-    <h2>Current Projects</h2>
-    <ul class="projects">
-        {% for project in projects %}
-            <li class="project">
-                <h3>{{ project.name }}</h3>
-                <p>{{ project.description }}</p>
-                <small>Created: {{ project.created_at }}</small>
-            </li>
-        {% empty %}
-            <li>No projects yet.</li>
-        {% endfor %}
-    </ul>
+    <main>
+        <h2>Grad Slate Sync - UpdateSlate Endpoint</h2>
 
-    <h2>API Endpoints</h2>
-    <ul>
-        <li>/api/projects/ - List and create projects</li>
-        <li>/api/tasks/ - List and create tasks</li>
-    </ul>
+        <section>
+            <h3>UpdateSlate Endpoint</h3>
+            <p>Use the following endpoint to update Slate records:</p>
+            <pre><code>/UpdateSlate</code></pre>
+            
+            <h4>Parameters:</h4>
+            <ul>
+                <li><strong>SlateGuid</strong>: VARCHAR(20)</li>
+                <li><strong>BUID</strong>: VARCHAR(20)</li>
+            </ul>
+
+            <h4>Example Request:</h4>
+            <pre><code>
+POST /UpdateSlate
+{
+    "SlateGuid": "your_slate_guid",
+    "BUID": "your_bu_id"
+}
+            </code></pre>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; Boston University. All rights reserved.</p>
+    </footer>
 </body>
 </html>
