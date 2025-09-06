@@ -48,7 +48,6 @@ MIDDLEWARE = [
 # Database configuration
 DATABASES = {
     'default': dj_database_url.config(
-        #default=os.environ.get('DATABASE_URL','postgres://ub3mq54n69p23o:p606cf8a0854be380d078f5143a3614057b49205373f1caab3d201a29aeb462db@c5cqb8h0eop3g3.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d8apn4ahrokivn'),
         conn_max_age=600,
         ssl_require=True
     )
